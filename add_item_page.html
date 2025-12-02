@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Item - Store Inventory Manager</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f1f8ff;
+      font-family: 'Segoe UI', sans-serif;
+      padding-top: 80px;
+    }
+    .navbar { background: #0277bd !important; }
+    .nav-link, .navbar-brand { color: white !important; font-weight: 600; }
+    .container { max-width: 600px; }
+    .card { border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.08); }
+    .btn-primary { background: #0277bd; border: none; }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="home_page.html">Inventory Manager</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="add_item_page.html">Add</a></li>
+        <li class="nav-item"><a class="nav-link" href="restock_page.html">Restock</a></li>
+        <li class="nav-item"><a class="nav-link" href="edit_inventory_page.html">Edit</a></li>
+        <li class="nav-item"><a class="nav-link" href="expiring_items_page.html">Expiring</a></li>
+        <li class="nav-item"><a class="nav-link" href="clearance_sale_page.html">Clearance</a></li>
+        <li class="nav-item"><a class="nav-link" href="categories_page.html">Categories</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <h2 class="text-center mb-4">➕ Add New Item</h2>
+
+  <div class="card p-4">
+    <label class="form-label">Item Name</label>
+    <input id="name" class="form-control mb-3" placeholder="Enter item name">
+
+    <label class="form-label">Manufacture Date</label>
+    <input id="mdate" type="date" class="form-control mb-3">
+
+    <label class="form-label">Expiry Date</label>
+    <input id="edate" type="date" class="form-control mb-3">
+
+    <label class="form-label">Initial Stock</label>
+    <input id="initial" type="number" class="form-control mb-3" placeholder="0">
+
+    <label class="form-label">Sold Units</label>
+    <input id="sold" type="number" class="form-control mb-3" placeholder="0">
+
+    <label class="form-label">Category</label>
+    <select id="category" class="form-control mb-3">
+      <option>Dairy</option>
+      <option>Snacks</option>
+      <option>Beverage</option>
+      <option>Grocery</option>
+    </select>
+
+    <button class="btn btn-primary w-100 mt-3" onclick="addItem()">Add Item</button>
+  </div>
+</div>
+
+<script>
+const KEY = 'inv_mobile_v1';
+let items = [];
+
+function load(){
+  const data = localStorage.getItem(KEY);
+  if(data) items = JSON.parse(data);
+}
+function save(){
+  localStorage.setItem(KEY, JSON.stringify(items));
+}
+
+function addItem(){
+  const n = document.getElementById('name').value.trim();
+  const md = document.getElementById('mdate').value;
+  const ed = document.getElementById('edate').value;
+  const init = Number(document.getElementById('initial').value) || 0;
+  const sold = Number(document.getElementById('sold').value) || 0;
+  const cat = document.getElementById('category').value;
+
+  if(!n){ alert('Item name required'); return; }
+
+  items.push({
+    name:n,
+    manufacture_date:md,
+    expiry_date:ed,
+    initial_stock:init,
+    sold:sold,
+    category:cat
+  });
+
+  save();
+  alert('Item Added!');
+  window.location.href = 'home.html';
+}
+
+load();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
